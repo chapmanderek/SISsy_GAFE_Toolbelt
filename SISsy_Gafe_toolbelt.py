@@ -1,6 +1,8 @@
-# put on github
-# have it add to a second file instead of making a duplicate of the first
+# have it add to a second list instead of making a duplicate of the first list (possibly faster)
+# have it skip over staff
+# fix for loop in the removing dashes and spaces
 # create an 'error file', have different sections fail 'gracefully'
+# format output file to include the date to make it more obvious, also so it doesnt overwrite previous data
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
@@ -33,11 +35,16 @@ google_accounts.sort()
 ic_accounts.sort()
 
 #remove staff to make matching more accurate
+temp_list = []
 for each in google_accounts:
-	if re.search('[0-9]' , each[0]) == None : google_accounts.remove(each); print 'removed a staff'
+	at_pos = each[0].find('@')
+	user_name = each[0][0:at_pos]
+	if re.search('[0-9]' , user_name) : temp_list.append(each)
+google_accounts = temp_list
 
 #remove dashes from both lists since IC doesnt include them consistently
 for line in google_accounts:
+
 	line[2] = line[2].replace('-', '')
 	line[2] = line[2].replace(' ', '')
 for each in ic_accounts:
