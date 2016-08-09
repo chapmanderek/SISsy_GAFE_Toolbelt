@@ -13,7 +13,7 @@ import re
 
 #default coloumn locations
 google_user_name = 0; google_first_name = 1; google_last_name = 2
-sis_first_name = 0; sis_last_name = 1; sis_grade = 2
+sis_first_name = 0; sis_last_name = 1; sis_ID = 2; sis_grade = 3
 
 
 #ask for source and destination csv's
@@ -33,6 +33,8 @@ except:
 google_accounts = [each for each in [line.split(',') for line in afile] if len(each) > 3]  #google coloumns are:  email, First Name, Last Name
 ic_accounts = [each for each in [line.split(',') for line in bfile] if len(each) > 3]  #IC columns:   first name, lastname, ID#, grade
 
+print 'sis accounts'
+print ic_accounts
 #remove header rows
 google_accounts.pop(0)
 ic_accounts.pop(0)
@@ -52,23 +54,20 @@ google_accounts = temp_list
 #remove dashes from both lists since IC doesnt include them consistently
 temp_list = list()
 for line in google_accounts:
-	print 'before --> {0}'.format(line)
 	l = [each.replace('-', '') for each in line ]
-	print 'after --> {0}'.format(line)
 	temp_list.append(l)
 	# line[2] = line[2].replace('-', '')
 	# line[2] = line[2].replace(' ', '')
 google_accounts = temp_list
 for each in ic_accounts:
-	each[1] = each[1].replace('-', '')
-	each[1] = each[1].replace(' ', '')
+	each[sis_last_name] = each[sis_last_name].replace('-', '')
+	each[sis_last_name] = each[sis_last_name].replace(' ', '')
 
 #remove double quotes from google
 for line in google_accounts:
-	line[0] = line[0].replace('"', '')
-	line[1] = line[1].replace('"', '')
-	line[2] = line[2].replace('"', '')
-	line[3] = line[3].replace('"', '')
+	line[google_user_name] = line[google_user_name].replace('"', '')
+	line[google_first_name] = line[google_first_name].replace('"', '')
+	line[google_last_name] = line[google_last_name].replace('"', '')
 
 #to prevent the for loop getting screwy when removing items
 final_google = google_accounts[:]
@@ -113,9 +112,9 @@ gfile_out.write(line)
 
 #google upload columns -->  First Name,Last Name,Email Address,Password(ID#)
 for each in final_ic:
-	formatted_email_address = each[0][0] + each[1] + grades[each[3]]
+	formatted_email_address = each[sis_first_name][0] + each[sis_last_name] + grades[each[sis_grade]]
 
-	line = each[0] + ',' + each[1] + ',' + formatted_email_address + ',' + each[2] + '\n'
+	line = each[sis_first_name] + ',' + each[sis_last_name] + ',' + formatted_email_address + ',' + each[sis_ID] + '\n'
 	gfile_out.write(line)
 gfile_out.close()
 
