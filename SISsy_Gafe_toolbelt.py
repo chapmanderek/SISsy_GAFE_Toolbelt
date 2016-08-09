@@ -1,11 +1,8 @@
-<<<<<<< HEAD
 # have it add to a second list instead of making a duplicate of the first list (possibly faster)
 # have it skip over staff
 # fix for loop in the removing dashes and spaces
-=======
 # have it add to a second file instead of making a duplicate of the first
 # create default settings for the data file columns instead of using numbers
->>>>>>> 53d4c39b8e572f7eb6a04d89ac89c90383ebcf35
 # create an 'error file', have different sections fail 'gracefully'
 # format output file to include the date to make it more obvious, also so it doesnt overwrite previous data
 # split up some sections into seperate functions
@@ -14,14 +11,19 @@
 
 import re
 
+#default coloumn locations
+google_user_name = 0; google_first_name = 1; google_last_name = 2
+sis_first_name = 0; sis_last_name = 1; sis_grade = 2
+
+
 #ask for source and destination csv's
-ahandle = raw_input('Enter source A file (press enter for google_data.csv):')
-bhandle = raw_input('Enter source B file (press enter for ic_extract.csv):')
+ahandle = raw_input('Enter source A file (press enter for google_test_data.csv):')
+bhandle = raw_input('Enter source B file (press enter for ic_test_data.csv):')
 
 try:
-	if len(ahandle) < 1 : ahandle = 'google_data.csv'
+	if len(ahandle) < 1 : ahandle = 'google_test_data.csv'
 	afile = open(ahandle).read().split('\n')
-	if len(bhandle) < 1 : bhandle = 'ic_extract.csv'
+	if len(bhandle) < 1 : bhandle = 'ic_test_data.csv'
 	bfile = open(bhandle).read().split('\n')
 except:
 	print 'one of those files was no good'
@@ -42,8 +44,8 @@ ic_accounts.sort()
 #remove staff to make matching more accurate
 temp_list = []
 for each in google_accounts:
-	at_pos = each[0].find('@')
-	user_name = each[0][0:at_pos]
+	at_pos = each[google_user_name].find('@')
+	user_name = each[google_user_name][0:at_pos]
 	if re.search('[0-9]' , user_name) : temp_list.append(each)
 google_accounts = temp_list
 
@@ -77,7 +79,7 @@ print 'Before comparison {lista} had {alength} students, {listb} had {blength} s
 for each_google in google_accounts:
 	for each_ic in ic_accounts:
 		# if count < 10 : print each_google[1], each_ic[0], each_google[2], each_ic[1]; count += 1
-		if each_google[1] == each_ic[0] and each_google[2] == each_ic[1]:
+		if each_google[google_first_name] == each_ic[sis_first_name] and each_google[google_last_name] == each_ic[sis_last_name]:
 			try:
 				final_ic.remove(each_ic)
 				final_google.remove(each_google)
