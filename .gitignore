@@ -1,3 +1,8 @@
+# My files to ignore
+unique_accounts.txt
+google_upload_formatted.csv
+error.log
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
