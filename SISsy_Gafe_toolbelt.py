@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 # have it add to a second list instead of making a duplicate of the first list (possibly faster)
 # have it skip over staff
 # fix for loop in the removing dashes and spaces
+=======
+# have it add to a second file instead of making a duplicate of the first
+# create default settings for the data file columns instead of using numbers
+>>>>>>> 53d4c39b8e572f7eb6a04d89ac89c90383ebcf35
 # create an 'error file', have different sections fail 'gracefully'
 # format output file to include the date to make it more obvious, also so it doesnt overwrite previous data
 # split up some sections into seperate functions

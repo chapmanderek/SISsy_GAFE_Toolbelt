@@ -1,0 +1,12 @@
+Google Data —>
+Has 20 students (21 records) and 5 staff (5 records)
+Has a duplicate student (same first + last name, different account address) and no duplicate staff
+Has a student with almost same name, address is same except year
+
+IC Data —> 
+Has 25 students with 5 being new ‘students’ that will need accounts created for them
+1 new student has almost same name as current student with same grade (twin)
+
+Can expect—>
+One new student should fail creating a new username since it would be a duplicate of an existing google username
+Should find a duplicate student in the google accounts
