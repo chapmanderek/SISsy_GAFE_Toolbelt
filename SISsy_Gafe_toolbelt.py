@@ -43,10 +43,15 @@ for each in google_accounts:
 google_accounts = temp_list
 
 #remove dashes from both lists since IC doesnt include them consistently
+temp_list = list()
 for line in google_accounts:
-
-	line[2] = line[2].replace('-', '')
-	line[2] = line[2].replace(' ', '')
+	print 'before --> {0}'.format(line)
+	l = [each.replace('-', '') for each in line ]
+	print 'after --> {0}'.format(line)
+	temp_list.append(l)
+	# line[2] = line[2].replace('-', '')
+	# line[2] = line[2].replace(' ', '')
+google_accounts = temp_list
 for each in ic_accounts:
 	each[1] = each[1].replace('-', '')
 	each[1] = each[1].replace(' ', '')
