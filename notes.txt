@@ -10,3 +10,6 @@ Has 25 students with 5 being new ‘students’ that will need accounts created 
 Can expect—>
 One new student should fail creating a new username since it would be a duplicate of an existing google username
 Should find a duplicate student in the google accounts
+
+google should have none (staff should be removed)
+ic should have 5 unique students
