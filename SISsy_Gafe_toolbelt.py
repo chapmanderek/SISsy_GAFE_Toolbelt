@@ -1,5 +1,5 @@
-# put on github
 # have it add to a second file instead of making a duplicate of the first
+# create default settings for the data file columns instead of using numbers
 # create an 'error file', have different sections fail 'gracefully'
 # split up some sections into seperate functions
 # new task to find duplicates in a file
