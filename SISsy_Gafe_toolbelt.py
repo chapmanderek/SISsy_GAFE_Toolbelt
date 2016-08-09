@@ -104,7 +104,7 @@ file_out.close()
 #output ready for google
 
 gfile_out = open('google_upload_formatted.csv', 'w')  
-grades = {'08':'17', '07':'18', '06':'19'}
+grades = {'8':'17', '7':'18', '6':'19'}
 
 blank_google = open("blank_google_upload.csv")
 line = blank_google.readline()
