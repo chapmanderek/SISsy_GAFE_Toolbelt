@@ -70,34 +70,42 @@ for line in google_accounts:
 	line[google_last_name] = line[google_last_name].replace('"', '')
 
 #to prevent the for loop getting screwy when removing items
-final_google = google_accounts[:]
-final_ic = ic_accounts[:]
+unique_google = list()
+unique_sis = list()
 
 print 'Before comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
 
+# check google for unique accounts
 for each_google in google_accounts:
+	match = False
 	for each_ic in ic_accounts:
-		# if count < 10 : print each_google[1], each_ic[0], each_google[2], each_ic[1]; count += 1
 		if each_google[google_first_name] == each_ic[sis_first_name] and each_google[google_last_name] == each_ic[sis_last_name]:
-			try:
-				final_ic.remove(each_ic)
-				final_google.remove(each_google)
-			except:
-				print "Found another matcher but removing it didnt go well {0}{2} = {1}{3}".format(each_google[1], each_ic[0], each_google[2], each_ic[1])
+			match = True
 			break
+	if match == False : unique_google.append(each_google)
 
-print '\n{lista} had {alength} unique students, {listb} had {blength} unique students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(final_google), blength =len(final_ic))
+# check sis for unique accounts
+for each_ic in ic_accounts:
+	match = False
+	for each_google in google_accounts:
+		if each_google[google_first_name] == each_ic[sis_first_name] and each_google[google_last_name] == each_ic[sis_last_name]:
+			match = True
+			break
+	if match == False : unique_sis.append(each_ic)
+
+
+print '\n{lista} had {alength} unique students, {listb} had {blength} unique students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(unique_google), blength =len(unique_sis))
 print '\n'
 
 #open a new file to write unique accounts on both sides to
 file_out = open('unique_accounts.txt', 'w')
 line = "-----------------------\nUnique to {0}\n".format(ahandle[:-4])
 file_out.write(line)
-file_out.write(str(final_google))
+file_out.write(str(unique_google))
 file_out.write('\n\n')
 line = "-----------------------\nUnique to {0}\n".format(bhandle[:-4])
 file_out.write(line)
-file_out.write(str(final_ic))
+file_out.write(str(unique_sis))
 file_out.write('\n')
 file_out.close()
 
@@ -111,7 +119,7 @@ line = blank_google.readline()
 gfile_out.write(line)
 
 #google upload columns -->  First Name,Last Name,Email Address,Password(ID#)
-for each in final_ic:
+for each in unique_sis:
 	formatted_email_address = each[sis_first_name][0] + each[sis_last_name] + grades[each[sis_grade]]
 
 	line = each[sis_first_name] + ',' + each[sis_last_name] + ',' + formatted_email_address + ',' + each[sis_ID] + '\n'
