@@ -1,4 +1,3 @@
-# fix for loop in the removing dashes and spaces
 # add in a 'coloumn' to SIS that is the 'comparing' name so that the original formatting 'dashes' etc is retained for the google formatted upload
 # have it add to a second file instead of making a duplicate of the first
 # create default settings for the data file columns instead of using numbers
@@ -13,7 +12,7 @@ import re
 
 #default coloumn locations
 google_user_name = 0; google_first_name = 1; google_last_name = 2
-sis_first_name = 0; sis_last_name = 1; sis_ID = 2; sis_grade = 3
+sis_first_name = 0; sis_last_name = 1; sis_ID = 2; sis_grade = 3; normalized_name_column = 4
 
 #not need to compare old students
 previous_year = 15
@@ -33,7 +32,7 @@ except:
 
 #load both csv's into lists
 google_accounts = [each for each in [line.split(',') for line in afile] if len(each) > 3]  #google coloumns are:  email, First Name, Last Name
-ic_accounts = [each for each in [line.split(',') for line in bfile] if len(each) > 3]  #IC columns:   first name, lastname, ID#, grade
+ic_accounts = [each for each in [line.split(',') for line in bfile] if len(each) > 3]  #IC columns:   first name, lastname, ID#, grade -- ammend on a normalized name
 
 #remove header rows
 google_accounts.pop(0)
@@ -57,35 +56,22 @@ temp_list = list()
 for each in google_accounts:
 	each_n = [individual.translate(None, '- "') for individual in each]
 	temp_list.append(each_n)
-
-	# each[google_last_name] = each[google_last_name].replace('-', '')
-	# each[google_last_name] = each[google_last_name].replace(' ', '')
-	# each[google_first_name] = each[google_first_name].replace('-', '')
-	# each[google_first_name] = each[google_first_name].replace(' ', '')
-
 google_accounts = temp_list
 
 #remove dashes, spaces, and double quotes from SIS to normalize data
 temp_list = list()
 for each in ic_accounts:
+	# normal_name = each[sis_first_name].translate(None, '- "') + each[sis_last_name].translate(None, '- "')
+	# each.append(normal_name)
 	each_n = [individual.translate(None, '- "') for individual in each]
-
-	# each[sis_last_name] = each[sis_last_name].replace('-', '')
-	# each[sis_last_name] = each[sis_last_name].replace(' ', '')
-	# each[sis_first_name] = each[sis_first_name].replace('-', '')
-	# each[sis_first_name] = each[sis_first_name].replace(' ', '')
 	temp_list.append(each_n)
 ic_accounts = temp_list
 
 
-
-#to prevent the for loop getting screwy when removing items
-unique_google = list()
-unique_sis = list()
-
 print 'Before comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
 
 # check google for unique accounts
+unique_google = list()
 for each_google in google_accounts:
 	match = False
 	for each_ic in ic_accounts:
@@ -95,6 +81,7 @@ for each_google in google_accounts:
 	if match == False : unique_google.append(each_google)
 
 # check sis for unique accounts
+unique_sis = list()
 for each_ic in ic_accounts:
 	match = False
 	for each_google in google_accounts:
