@@ -1,5 +1,5 @@
-# have it skip over staff
 # fix for loop in the removing dashes and spaces
+# add in a 'coloumn' to SIS that is the 'comparing' name so that the original formatting 'dashes' etc is retained for the google formatted upload
 # have it add to a second file instead of making a duplicate of the first
 # create default settings for the data file columns instead of using numbers
 # create an 'error file', have different sections fail 'gracefully'
@@ -7,7 +7,7 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.3a'
+print 'v 0.0.3b'
 
 import re
 
@@ -43,7 +43,7 @@ ic_accounts.pop(0)
 google_accounts.sort()  
 ic_accounts.sort()
 
-#remove staff from google to make matching more accurate, only take username as domain has a digit in it
+#remove staff from google to make matching more accurate, only take username as the domain has a digit in it
 temp_list = []
 for each in google_accounts:
 	at_pos = each[google_user_name].find('@')
@@ -52,37 +52,31 @@ for each in google_accounts:
 		if not re.search(str(previous_year), user_name) : temp_list.append(each)
 google_accounts = temp_list
 
-#remove dashes and spaces from google to normalize data
+#remove dashes and spaces, double quotes from google to normalize data
 temp_list = list()
 for each in google_accounts:
-	each[google_last_name] = each[google_last_name].replace('-', '')
-	each[google_last_name] = each[google_last_name].replace(' ', '')
-	each[google_first_name] = each[google_first_name].replace('-', '')
-	each[google_first_name] = each[google_first_name].replace(' ', '')
-	temp_list.append(each)
-	# line[2] = line[2].replace('-', '')
-	# line[2] = line[2].replace(' ', '')
+	each_n = [individual.translate(None, '- "') for individual in each]
+	temp_list.append(each_n)
+
+	# each[google_last_name] = each[google_last_name].replace('-', '')
+	# each[google_last_name] = each[google_last_name].replace(' ', '')
+	# each[google_first_name] = each[google_first_name].replace('-', '')
+	# each[google_first_name] = each[google_first_name].replace(' ', '')
+
 google_accounts = temp_list
 
-#remove dashes and spaces from SIS to normalize data
+#remove dashes, spaces, and double quotes from SIS to normalize data
 temp_list = list()
 for each in ic_accounts:
-	each[sis_last_name] = each[sis_last_name].replace('-', '')
-	each[sis_last_name] = each[sis_last_name].replace(' ', '')
-	each[sis_first_name] = each[sis_first_name].replace('-', '')
-	each[sis_first_name] = each[sis_first_name].replace(' ', '')
-	temp_list.append(each)
+	each_n = [individual.translate(None, '- "') for individual in each]
+
+	# each[sis_last_name] = each[sis_last_name].replace('-', '')
+	# each[sis_last_name] = each[sis_last_name].replace(' ', '')
+	# each[sis_first_name] = each[sis_first_name].replace('-', '')
+	# each[sis_first_name] = each[sis_first_name].replace(' ', '')
+	temp_list.append(each_n)
 ic_accounts = temp_list
 
-
-#remove double quotes from google
-temp_list = list()
-for line in google_accounts:
-	line[google_user_name] = line[google_user_name].replace('"', '')
-	line[google_first_name] = line[google_first_name].replace('"', '')
-	line[google_last_name] = line[google_last_name].replace('"', '')
-	temp_list.append(line)
-google_accounts = temp_list
 
 
 #to prevent the for loop getting screwy when removing items
