@@ -1,4 +1,3 @@
-# have it add to a second list instead of making a duplicate of the first list (possibly faster)
 # have it skip over staff
 # fix for loop in the removing dashes and spaces
 # have it add to a second file instead of making a duplicate of the first
@@ -8,7 +7,7 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.2a'
+print 'v 0.0.3a'
 
 import re
 
@@ -16,6 +15,8 @@ import re
 google_user_name = 0; google_first_name = 1; google_last_name = 2
 sis_first_name = 0; sis_last_name = 1; sis_ID = 2; sis_grade = 3
 
+#not need to compare old students
+previous_year = 15
 
 #ask for source and destination csv's
 ahandle = raw_input('Enter source A file (press enter for google_test_data.csv):')
@@ -42,12 +43,13 @@ ic_accounts.pop(0)
 google_accounts.sort()  
 ic_accounts.sort()
 
-#remove staff to make matching more accurate
+#remove staff from google to make matching more accurate, only take username as domain has a digit in it
 temp_list = []
 for each in google_accounts:
 	at_pos = each[google_user_name].find('@')
 	user_name = each[google_user_name][0:at_pos]
-	if re.search('[0-9]' , user_name) : temp_list.append(each)
+	if re.search('[0-9]' , user_name): 
+		if not re.search(str(previous_year), user_name) : temp_list.append(each)
 google_accounts = temp_list
 
 #remove dashes and spaces from google to normalize data
