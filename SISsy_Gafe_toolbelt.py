@@ -8,6 +8,7 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
+print 'v 0.0.2a'
 
 import re
 
@@ -33,8 +34,6 @@ except:
 google_accounts = [each for each in [line.split(',') for line in afile] if len(each) > 3]  #google coloumns are:  email, First Name, Last Name
 ic_accounts = [each for each in [line.split(',') for line in bfile] if len(each) > 3]  #IC columns:   first name, lastname, ID#, grade
 
-print 'sis accounts'
-print ic_accounts
 #remove header rows
 google_accounts.pop(0)
 ic_accounts.pop(0)
@@ -51,23 +50,38 @@ for each in google_accounts:
 	if re.search('[0-9]' , user_name) : temp_list.append(each)
 google_accounts = temp_list
 
-#remove dashes from both lists since IC doesnt include them consistently
+#remove dashes and spaces from google to normalize data
 temp_list = list()
-for line in google_accounts:
-	l = [each.replace('-', '') for each in line ]
-	temp_list.append(l)
+for each in google_accounts:
+	each[google_last_name] = each[google_last_name].replace('-', '')
+	each[google_last_name] = each[google_last_name].replace(' ', '')
+	each[google_first_name] = each[google_first_name].replace('-', '')
+	each[google_first_name] = each[google_first_name].replace(' ', '')
+	temp_list.append(each)
 	# line[2] = line[2].replace('-', '')
 	# line[2] = line[2].replace(' ', '')
 google_accounts = temp_list
+
+#remove dashes and spaces from SIS to normalize data
+temp_list = list()
 for each in ic_accounts:
 	each[sis_last_name] = each[sis_last_name].replace('-', '')
 	each[sis_last_name] = each[sis_last_name].replace(' ', '')
+	each[sis_first_name] = each[sis_first_name].replace('-', '')
+	each[sis_first_name] = each[sis_first_name].replace(' ', '')
+	temp_list.append(each)
+ic_accounts = temp_list
+
 
 #remove double quotes from google
+temp_list = list()
 for line in google_accounts:
 	line[google_user_name] = line[google_user_name].replace('"', '')
 	line[google_first_name] = line[google_first_name].replace('"', '')
 	line[google_last_name] = line[google_last_name].replace('"', '')
+	temp_list.append(line)
+google_accounts = temp_list
+
 
 #to prevent the for loop getting screwy when removing items
 unique_google = list()
@@ -112,7 +126,7 @@ file_out.close()
 #output ready for google
 
 gfile_out = open('google_upload_formatted.csv', 'w')  
-grades = {'8':'17', '7':'18', '6':'19'}
+grades = {'08':'17', '07':'18', '06':'19', '8':'17', '7':'18', '6':'19'}
 
 blank_google = open("blank_google_upload.csv")
 line = blank_google.readline()
