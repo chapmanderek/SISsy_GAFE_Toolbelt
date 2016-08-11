@@ -54,26 +54,30 @@ google_accounts = temp_list
 
 #remove dashes and spaces, double quotes from google to normalize data
 temp_list = list()
+temp_dict = dict()
 for each in google_accounts:
-	normal_name = each[google_first_name].translate(None, '- "') + each[google_last_name].translate(None, '- "')	
-	print normal_name
+	normalized_name = each[google_first_name].translate(None, '- "') + each[google_last_name].translate(None, '- "')	
+	temp_dict[normalized_name] = each
 	each_n = [individual.translate(None, '- "') for individual in each]
 	temp_list.append(each_n)
+for key, value in temp_dict.iteritems() : print key, '-->', value[0:3]
 google_accounts = temp_list
 
 #remove dashes, spaces, and double quotes from SIS to normalize data
 temp_list = list()
 temp_dict = dict()
 for each in ic_accounts:
-	normal_name = each[sis_first_name].translate(None, '- "') + each[sis_last_name].translate(None, '- "')
-	temp_dict[normal_name] = each
+	normalized_name = each[sis_first_name].translate(None, '- "') + each[sis_last_name].translate(None, '- "')
+	temp_dict[normalized_name] = each
 	# each.append(normal_name)
 	each_n = [individual.translate(None, '- "') for individual in each]
 	temp_list.append(each_n)
+for key, value in temp_dict.iteritems() : print key, '-->', value[0:3]
 ic_accounts = temp_list
 
 
 print 'Before comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
+
 
 # check google for unique accounts
 unique_google = list()
