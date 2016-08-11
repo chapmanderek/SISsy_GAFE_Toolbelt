@@ -1,13 +1,9 @@
-# add in a 'coloumn' to SIS that is the 'comparing' name so that the original formatting 'dashes' etc is retained for the google formatted upload
-# could make the normailzed name the key for a dictionary
-# have it add to a second file instead of making a duplicate of the first
-# create default settings for the data file columns instead of using numbers
 # create an 'error file', have different sections fail 'gracefully'
 # format output file to include the date to make it more obvious, also so it doesnt overwrite previous data
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.4'
+print 'v 0.0.5'
 
 import re
 
@@ -32,16 +28,15 @@ except:
 	exit()
 
 #load both csv's into lists
-google_accounts = [each for each in [line.split(',') for line in afile] if len(each) > 3]  #google coloumns are:  email, First Name, Last Name
-ic_accounts = [each for each in [line.split(',') for line in bfile] if len(each) > 3]  #IC columns:   first name, lastname, ID#, grade -- ammend on a normalized name
+try:
+	google_accounts = [each for each in [line.split(',') for line in afile] if len(each) > 3]  #google coloumns are:  email, First Name, Last Name
+	ic_accounts = [each for each in [line.split(',') for line in bfile] if len(each) > 3]  #IC columns:   first name, lastname, ID#, grade -- ammend on a normalized name
+except:
+	print 'Loading the CSVs didnt go very well'
 
 #remove header rows
 google_accounts.pop(0)
 ic_accounts.pop(0)
-
-#to make the matching possibly quicker
-google_accounts.sort()  
-ic_accounts.sort()
 
 #remove staff from google to make matching more accurate, only take username as the domain has a digit in it
 temp_list = []
@@ -53,26 +48,18 @@ for each in google_accounts:
 google_accounts = temp_list
 
 #remove dashes and spaces, double quotes from google to normalize data
-temp_list = list()
 temp_dict = dict()
 for each in google_accounts:
 	normalized_name = each[google_first_name].translate(None, '- "') + each[google_last_name].translate(None, '- "')	
 	temp_dict[normalized_name] = each
-	each_n = [individual.translate(None, '- "') for individual in each]
-	temp_list.append(each_n)
 google_accounts = temp_dict
 
 #remove dashes, spaces, and double quotes from SIS to normalize data
-temp_list = list()
 temp_dict = dict()
 for each in ic_accounts:
 	normalized_name = each[sis_first_name].translate(None, '- "') + each[sis_last_name].translate(None, '- "')
 	temp_dict[normalized_name] = each
-	# each.append(normal_name)
-	each_n = [individual.translate(None, '- "') for individual in each]
-	temp_list.append(each_n)
 ic_accounts = temp_dict
-
 
 print 'Before comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
 
@@ -112,8 +99,7 @@ file_out.write(str(unique_sis))
 file_out.write('\n')
 file_out.close()
 
-#output ready for google
-
+#output ready to upload into google admin console
 gfile_out = open('google_upload_formatted.csv', 'w')  
 grades = {'08':'17', '07':'18', '06':'19', '8':'17', '7':'18', '6':'19'}
 
@@ -124,7 +110,6 @@ gfile_out.write(line)
 #google upload columns -->  First Name,Last Name,Email Address,Password(ID#)
 for each in unique_sis:
 	formatted_email_address = each[sis_first_name][0] + each[sis_last_name] + grades[each[sis_grade]]
-
 	line = each[sis_first_name] + ',' + each[sis_last_name] + ',' + formatted_email_address + ',' + each[sis_ID] + '\n'
 	gfile_out.write(line)
 gfile_out.close()
