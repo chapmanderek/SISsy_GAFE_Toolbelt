@@ -7,7 +7,7 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.3c'
+print 'v 0.0.4'
 
 import re
 
@@ -60,8 +60,7 @@ for each in google_accounts:
 	temp_dict[normalized_name] = each
 	each_n = [individual.translate(None, '- "') for individual in each]
 	temp_list.append(each_n)
-for key, value in temp_dict.iteritems() : print key, '-->', value[0:3]
-google_accounts = temp_list
+google_accounts = temp_dict
 
 #remove dashes, spaces, and double quotes from SIS to normalize data
 temp_list = list()
@@ -72,32 +71,30 @@ for each in ic_accounts:
 	# each.append(normal_name)
 	each_n = [individual.translate(None, '- "') for individual in each]
 	temp_list.append(each_n)
-for key, value in temp_dict.iteritems() : print key, '-->', value[0:3]
-ic_accounts = temp_list
+ic_accounts = temp_dict
 
 
 print 'Before comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
 
-
 # check google for unique accounts
 unique_google = list()
-for each_google in google_accounts:
+for each_google in google_accounts.keys():
 	match = False
-	for each_ic in ic_accounts:
-		if each_google[google_first_name] == each_ic[sis_first_name] and each_google[google_last_name] == each_ic[sis_last_name]:
+	for each_ic in ic_accounts.keys():
+		if each_google == each_ic:
 			match = True
 			break
-	if match == False : unique_google.append(each_google)
+	if match == False : unique_google.append(google_accounts[each_google])
 
 # check sis for unique accounts
 unique_sis = list()
-for each_ic in ic_accounts:
+for each_ic in ic_accounts.keys():
 	match = False
-	for each_google in google_accounts:
-		if each_google[google_first_name] == each_ic[sis_first_name] and each_google[google_last_name] == each_ic[sis_last_name]:
+	for each_google in google_accounts.keys():
+		if each_ic == each_google:
 			match = True
 			break
-	if match == False : unique_sis.append(each_ic)
+	if match == False : unique_sis.append(ic_accounts[each_ic])
 
 
 print '\n{lista} had {alength} unique students, {listb} had {blength} unique students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(unique_google), blength =len(unique_sis))

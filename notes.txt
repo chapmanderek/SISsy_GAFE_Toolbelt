@@ -15,3 +15,5 @@ Should find a duplicate student in the google accounts
 
 google should have no unique (orphaned accounts) --> staff should be removed, previous year student should be ignored
 ic should have 5 unique students
+
+One of the IC students has a random dash in name.  Should preserve formatting of name when setting up google accounts
