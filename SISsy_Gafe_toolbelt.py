@@ -7,7 +7,7 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.3b'
+print 'v 0.0.3c'
 
 import re
 
@@ -63,9 +63,10 @@ google_accounts = temp_list
 
 #remove dashes, spaces, and double quotes from SIS to normalize data
 temp_list = list()
+temp_dict = dict()
 for each in ic_accounts:
 	normal_name = each[sis_first_name].translate(None, '- "') + each[sis_last_name].translate(None, '- "')
-	print normal_name
+	temp_dict[normal_name] = each
 	# each.append(normal_name)
 	each_n = [individual.translate(None, '- "') for individual in each]
 	temp_list.append(each_n)
