@@ -1,4 +1,5 @@
 # add in a 'coloumn' to SIS that is the 'comparing' name so that the original formatting 'dashes' etc is retained for the google formatted upload
+# could make the normailzed name the key for a dictionary
 # have it add to a second file instead of making a duplicate of the first
 # create default settings for the data file columns instead of using numbers
 # create an 'error file', have different sections fail 'gracefully'
@@ -11,8 +12,8 @@ print 'v 0.0.3b'
 import re
 
 #default coloumn locations
-google_user_name = 0; google_first_name = 1; google_last_name = 2
-sis_first_name = 0; sis_last_name = 1; sis_ID = 2; sis_grade = 3; normalized_name_column = 4
+google_user_name = 0; google_first_name = 1; google_last_name = 2; google_normalized_name = 7
+sis_first_name = 0; sis_last_name = 1; sis_ID = 2; sis_grade = 3; sis_normalized_name = 4
 
 #not need to compare old students
 previous_year = 15
@@ -54,6 +55,8 @@ google_accounts = temp_list
 #remove dashes and spaces, double quotes from google to normalize data
 temp_list = list()
 for each in google_accounts:
+	normal_name = each[google_first_name].translate(None, '- "') + each[google_last_name].translate(None, '- "')	
+	print normal_name
 	each_n = [individual.translate(None, '- "') for individual in each]
 	temp_list.append(each_n)
 google_accounts = temp_list
@@ -61,7 +64,8 @@ google_accounts = temp_list
 #remove dashes, spaces, and double quotes from SIS to normalize data
 temp_list = list()
 for each in ic_accounts:
-	# normal_name = each[sis_first_name].translate(None, '- "') + each[sis_last_name].translate(None, '- "')
+	normal_name = each[sis_first_name].translate(None, '- "') + each[sis_last_name].translate(None, '- "')
+	print normal_name
 	# each.append(normal_name)
 	each_n = [individual.translate(None, '- "') for individual in each]
 	temp_list.append(each_n)
