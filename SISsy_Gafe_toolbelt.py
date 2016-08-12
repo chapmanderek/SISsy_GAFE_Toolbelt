@@ -3,9 +3,10 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.5'
+print 'v 0.0.7'
 
 import re
+import datetime as dt
 
 #default coloumn locations
 google_user_name = 0; google_first_name = 1; google_last_name = 2; google_normalized_name = 7
@@ -87,8 +88,13 @@ for each_ic in ic_accounts.keys():
 print '\n{lista} had {alength} unique students, {listb} had {blength} unique students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(unique_google), blength =len(unique_sis))
 print '\n'
 
+# get and format date ready to use for file names
+now = dt.datetime.now()
+mdy = str(now.month) + '-' + str(now.month) + '-' + str(now.year)
+
 #open a new file to write unique accounts on both sides to
-file_out = open('unique_accounts.txt', 'w')
+file_out_name = 'unique_accounts_{date}.txt'.format(date = mdy)
+file_out = open(file_out_name, 'w')
 line = "-----------------------\nUnique to {0}\n".format(ahandle[:-4])
 file_out.write(line)
 file_out.write(str(unique_google))
@@ -100,7 +106,8 @@ file_out.write('\n')
 file_out.close()
 
 #output ready to upload into google admin console
-gfile_out = open('google_upload_formatted.csv', 'w')  
+gfile_name = 'google_upload_formatted_{date}.csv'.format(date = mdy)
+gfile_out = open(gfile_name, 'w')
 grades = {'08':'17', '07':'18', '06':'19', '8':'17', '7':'18', '6':'19'}
 
 blank_google = open("blank_google_upload.csv")
