@@ -1,8 +1,12 @@
-# My files to ignore
-unique_accounts.txt
-google_upload_formatted.csv
-error.log
-.DS_Store
+# Ignore everything
+*
+
+# Except
+!SISsy_Gafe_toolbelt.py
+!ic_test_data.csv
+!notes.txt
+!google_test_data.csv
+!LICENSE
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
