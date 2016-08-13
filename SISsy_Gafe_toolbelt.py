@@ -3,7 +3,7 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.7'
+print 'v 0.0.8a'
 
 import re
 import datetime as dt

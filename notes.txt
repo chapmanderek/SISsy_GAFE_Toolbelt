@@ -1,5 +1,5 @@
 Google Data —>
-Has 21 students (22 records) and 5 staff (5 records)
+Has 22 students (23 records) and 5 staff (5 records)
 Has a duplicate student (same first + last name, different account address) and no duplicate staff
 Has a student with almost same name, address is same except year
 One student is left over from previous year
@@ -12,6 +12,8 @@ Can expect—>
 One new student should fail creating a new username since it would be a duplicate of an existing google username
 
 Should find a duplicate student in the google accounts
+
+Google should have 1 unique account (orphaned)
 
 google should have no unique (orphaned accounts) --> staff should be removed, previous year student should be ignored
 ic should have 5 unique students
