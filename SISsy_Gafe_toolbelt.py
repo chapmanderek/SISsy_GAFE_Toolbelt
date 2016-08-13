@@ -42,10 +42,9 @@ ic_accounts.pop(0)
 #remove staff from google to make matching more accurate, only take username as the domain has a digit in it
 temp_list = []
 for each in google_accounts:
-	at_pos = each[google_user_name].find('@')
-	user_name = each[google_user_name][0:at_pos]
-	if re.search('[0-9]' , user_name): 
-		if not re.search(str(previous_year), user_name) : temp_list.append(each)
+	user_name = each[google_user_name][0:each[google_user_name].find('@')]
+	if re.search('[0-9]' , user_name) and not re.search(str(previous_year), user_name): 
+		temp_list.append(each)
 google_accounts = temp_list
 
 #remove dashes and spaces, double quotes from google to normalize data
@@ -62,7 +61,7 @@ for each in ic_accounts:
 	temp_dict[normalized_name] = each
 ic_accounts = temp_dict
 
-print 'Before comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
+print '\nBefore comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
 
 # check google for unique accounts
 unique_google = list()
@@ -85,28 +84,28 @@ for each_ic in ic_accounts.keys():
 	if match == False : unique_sis.append(ic_accounts[each_ic])
 
 
-print '\n{lista} had {alength} unique students, {listb} had {blength} unique students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(unique_google), blength =len(unique_sis))
+print '{lista} had {alength} unique students, {listb} had {blength} unique students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(unique_google), blength =len(unique_sis))
 print '\n'
 
 # get and format date ready to use for file names
 now = dt.datetime.now()
-mdy = str(now.month) + '-' + str(now.month) + '-' + str(now.year)
+date_mdy = str(now.month) + '-' + str(now.month) + '-' + str(now.year)
 
 #open a new file to write unique accounts on both sides to
-file_out_name = 'unique_accounts_{date}.txt'.format(date = mdy)
+file_out_name = 'unique_accounts_{date}.txt'.format(date = date_mdy)
 file_out = open(file_out_name, 'w')
-line = "-----------------------\nUnique to {0}\n".format(ahandle[:-4])
-file_out.write(line)
-file_out.write(str(unique_google))
+
+file_out.write("-----------------------\nUnique to {0}\n".format(ahandle[:-4]))
+file_out.write(str(unique_google)[0:3])
 file_out.write('\n\n')
 line = "-----------------------\nUnique to {0}\n".format(bhandle[:-4])
 file_out.write(line)
-file_out.write(str(unique_sis))
+file_out.write(str(unique_sis[:1]))
 file_out.write('\n')
 file_out.close()
 
 #output ready to upload into google admin console
-gfile_name = 'google_upload_formatted_{date}.csv'.format(date = mdy)
+gfile_name = 'google_upload_formatted_{date}.csv'.format(date = date_mdy)
 gfile_out = open(gfile_name, 'w')
 grades = {'08':'17', '07':'18', '06':'19', '8':'17', '7':'18', '6':'19'}
 
