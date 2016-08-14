@@ -13,9 +13,7 @@ One new student should fail creating a new username since it would be a duplicat
 
 Should find a duplicate student in the google accounts
 
-Google should have 1 unique account (orphaned)
-
-google should have no unique (orphaned accounts) --> staff should be removed, previous year student should be ignored
+google should have 1 unique (orphaned accounts) --> staff should be removed, previous year student should be ignored
 ic should have 5 unique students
 
 One of the IC students has a random dash in name.  Should preserve formatting of name when setting up google accounts
