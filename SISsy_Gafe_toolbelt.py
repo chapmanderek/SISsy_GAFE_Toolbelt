@@ -3,7 +3,7 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.9'
+print 'branch seperate sections 2'
 
 import re
 import datetime as dt
@@ -47,42 +47,35 @@ for each in google_accounts:
 		temp_list.append(each)
 google_accounts = temp_list
 
-#remove dashes and spaces, double quotes from google to normalize data
-temp_dict = dict()
-for each in google_accounts:
-	normalized_name = each[google_first_name].translate(None, '- "') + each[google_last_name].translate(None, '- "')	
-	temp_dict[normalized_name] = each
-google_accounts = temp_dict
 
-#remove dashes, spaces, and double quotes from SIS to normalize data
-temp_dict = dict()
-for each in ic_accounts:
-	normalized_name = each[sis_first_name].translate(None, '- "') + each[sis_last_name].translate(None, '- "')
-	temp_dict[normalized_name] = each
-ic_accounts = temp_dict
+#remove dashes, spaces, and double quotes from list then create a dict with a normalized name
+def create_dict_w_normalizedname(l, first_name, last_name):
+	temp_dict = dict()
+	for each in l:
+		normalized_name = each[first_name].translate(None, '- "') + each[last_name].translate(None, '- "')	
+		temp_dict[normalized_name] = each
+	return temp_dict
+
+google_accounts = create_dict_w_normalizedname(google_accounts, google_first_name, google_last_name)
+ic_accounts = create_dict_w_normalizedname(ic_accounts[:], sis_first_name, sis_last_name)
 
 print '\nBefore comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
 
-# check google for unique accounts
-unique_google = list()
-for each_google in google_accounts.keys():
-	match = False
-	for each_ic in ic_accounts.keys():
-		if each_google == each_ic:
-			match = True
-			break
-	if match == False : unique_google.append(google_accounts[each_google])
+# check first account against the second for unique accounts using the key which is a normalized name
+def find_unique_accounts(base, comparison):
+	unique_accounts = list()
+	for each_base in base.keys():
+		match = False
+		for each_comparison in comparison.keys():
+			if each_base == each_comparison:
+				match = True
+				break
+		if match == False : unique_accounts.append(base[each_base])
+	return unique_accounts
 
-# check sis for unique accounts
-unique_sis = list()
-for each_ic in ic_accounts.keys():
-	match = False
-	for each_google in google_accounts.keys():
-		if each_ic == each_google:
-			match = True
-			break
-	if match == False : unique_sis.append(ic_accounts[each_ic])
-
+# check each account for unique files and create new lists
+unique_google = find_unique_accounts(google_accounts, ic_accounts)
+unique_sis = find_unique_accounts(ic_accounts, google_accounts)
 
 print '{lista} had {alength} unique students, {listb} had {blength} unique students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(unique_google), blength =len(unique_sis))
 print '\n'
@@ -104,7 +97,7 @@ file_out.write('\n')
 
 file_out.close()
 
-#output ready to upload into google admin console
+#output unique sis accounts ready to upload into google admin console
 gfile_name = 'google_upload_formatted_{date}.csv'.format(date = date_mdy)
 gfile_out = open(gfile_name, 'w')
 grades = {'08':'17', '07':'18', '06':'19', '8':'17', '7':'18', '6':'19'}
