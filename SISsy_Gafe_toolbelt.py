@@ -3,7 +3,7 @@
 # split up some sections into seperate functions
 # new task to find duplicates in a file
 # perhaps an 'opening' section or help section
-print 'v 0.0.7'
+print 'branch GolfRefactor - 1'
 
 import re
 import datetime as dt
@@ -89,19 +89,19 @@ print '\n'
 
 # get and format date ready to use for file names
 now = dt.datetime.now()
-date_mdy = str(now.month) + '-' + str(now.month) + '-' + str(now.year)
+date_mdy = str(now.month) + '-' + str(now.day) + '-' + str(now.year)
 
 #open a new file to write unique accounts on both sides to
 file_out_name = 'unique_accounts_{date}.txt'.format(date = date_mdy)
 file_out = open(file_out_name, 'w')
 
 file_out.write("-----------------------\nUnique to {0}\n".format(ahandle[:-4]))
-file_out.write(str(unique_google)[0:3])
+file_out.write(str(unique_google))
 file_out.write('\n\n')
-line = "-----------------------\nUnique to {0}\n".format(bhandle[:-4])
-file_out.write(line)
-file_out.write(str(unique_sis[:1]))
+file_out.write("-----------------------\nUnique to {0}\n".format(bhandle[:-4]))
+file_out.write(str(unique_sis))
 file_out.write('\n')
+
 file_out.close()
 
 #output ready to upload into google admin console
@@ -109,9 +109,9 @@ gfile_name = 'google_upload_formatted_{date}.csv'.format(date = date_mdy)
 gfile_out = open(gfile_name, 'w')
 grades = {'08':'17', '07':'18', '06':'19', '8':'17', '7':'18', '6':'19'}
 
+# insert googles header row
 blank_google = open("blank_google_upload.csv")
-line = blank_google.readline()
-gfile_out.write(line)
+gfile_out.write(blank_google.readline())
 
 #google upload columns -->  First Name,Last Name,Email Address,Password(ID#)
 for each in unique_sis:
