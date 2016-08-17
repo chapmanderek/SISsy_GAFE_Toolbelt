@@ -1,9 +1,11 @@
 # create an 'error file', have different sections fail 'gracefully'
-# format output file to include the date to make it more obvious, also so it doesnt overwrite previous data
 # split up some sections into seperate functions
+# converting into a dictionary automatically removes duplicates; what to do
 # new task to find duplicates in a file
+# add in key commands to automatically load test data or to load default file names
+# do some basic 'error' checking to make sure the right csv file is loaded
 # perhaps an 'opening' section or help section
-print 'branch seperate sections 2'
+print 'master 0.9'
 
 import re
 import datetime as dt
