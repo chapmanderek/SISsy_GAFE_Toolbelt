@@ -1,0 +1,1 @@
+This program is intended to make keeping a Google Apps domain synced with your school SIS system.  Becuase it uses CSV files as the import it should work with any modern SIS system.
