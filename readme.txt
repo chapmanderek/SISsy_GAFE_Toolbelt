@@ -1,1 +1,1 @@
-This program is intended to make keeping a Google Apps domain synced with your school SIS system.  Becuase it uses CSV files as the import it should work with any modern SIS system.
+This program is intended to make keeping a Google Apps domain synced with your school SIS system.  Because it uses CSV files as the import it should work with any modern SIS system.  Because it runs locally on your machine and does not submit anything anywhere it will not violate confidentiality or educational privacy regulations.
