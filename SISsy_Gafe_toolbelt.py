@@ -1,10 +1,3 @@
-# create an 'error file', have different sections fail 'gracefully'
-# split up some sections into seperate functions
-# converting into a dictionary automatically removes duplicates; what to do
-# new task to find duplicates in a file
-# add in key commands to automatically load test data or to load default file names
-# do some basic 'error' checking to make sure the right csv file is loaded
-# perhaps an 'opening' section or help section
 print 'master 0.9'
 
 import re
@@ -32,7 +25,7 @@ except:
 
 #load both csv's into lists
 try:
-	google_accounts = [each for each in [line.split(',') for line in afile] if len(each) > 3]  #google coloumns are:  email, First Name, Last Name
+	google_accounts = [each for each in [line.split(',') for line in afile] if len(each) > 3]  #google coloumns are:  email, First Name, Last Name  - 11th coloumn is employee id
 	ic_accounts = [each for each in [line.split(',') for line in bfile] if len(each) > 3]  #IC columns:   first name, lastname, ID#, grade -- ammend on a normalized name
 except:
 	print 'Loading the CSVs didnt go very well'
