@@ -1,5 +1,5 @@
 print 'master 0.9'
-print 'branch findduplicates v2'
+print 'branch duplicates in google'
 
 import re
 import datetime as dt
@@ -63,8 +63,17 @@ def create_dict_with_google_username(l, username):
 		temp_dict[dict_key] = each
 	return temp_dict
 
+def find_duplicates_in_google(d):
+	for each_key in d:
+		for each_compare in d:
+			if each_key != each_compare and d[each_key][google_first_name] == d[each_compare][google_first_name] and d[each_key][google_last_name] == d[each_compare][google_last_name]:
+				print 'matcher {0} --> {1}'.format(each_key, each_compare)
+
 google_accounts = create_dict_with_google_username(google_accounts, google_user_name)
 ic_accounts = create_dict_w_normalizedname_sis(ic_accounts[:], sis_first_name, sis_last_name)
+print '\npossible duplicates in Google ----------'
+find_duplicates_in_google(google_accounts)
+
 
 print '\nBefore comparison {lista} had {alength} students, {listb} had {blength} students'.format(lista = ahandle[:-4], listb = bhandle[:-4], alength=len(google_accounts), blength =len(ic_accounts))
 
